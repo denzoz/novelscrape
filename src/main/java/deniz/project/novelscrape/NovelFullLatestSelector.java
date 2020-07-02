@@ -15,12 +15,14 @@ import org.jsoup.nodes.Element;
 import java.io.IOException;
 
 // Scanner used to get input
-import java.util.Scanner;       
+import java.util.Scanner;
+import java.util.ArrayList;
         
 public class NovelFullLatestSelector {
 
     private int selection; // if you are going to change access to a variable,
                            // must be at class-level 
+    private String selectionURL;
     
     public NovelFullLatestSelector() {
         try {
@@ -32,17 +34,19 @@ public class NovelFullLatestSelector {
 
             Elements novels = doc.getElementsByClass("row");
             int novelCounter = 0;
+            ArrayList<String> novelNames = new ArrayList<String>();
+            System.out.println("Latest novel releases: \n");
             for (Element novel : novels) { // for every novel in the group of novels we have do this
                 String novelName = novel.getElementsByClass("truyen-title").text();
+                novelNames.add(novelName); // arraylist of all novel names for later
                 String novelAuthor = novel.getElementsByClass("author").text();
                 if (!(novelName.trim().length() == 0 || novelAuthor.trim().length() == 0)) {
                     novelCounter++;
                     System.out.println(novelCounter + ") " +novelName + " by " + novelAuthor + "\n");
-                    
                 } // this ignores any blanks that also have the same 'truyen-title' or 'author' class
             }
             
-            System.out.println("Latest novel releases: ");
+
             // take user's novel selection and validate
             while (true) {
                 System.out.println("Enter novel selection: ");
@@ -54,7 +58,21 @@ public class NovelFullLatestSelector {
                     System.out.println("Invalid selection, please try again");
                 }
             }
-            // TODO: String selectionURL =
+            System.out.println(novels.size());
+            // Now going to make the URL for the novel's page
+            
+            // When using novelNames.get, usually use index number but due to
+            // how the site is scraped, index 0 is empy to just use 
+            // normal human numbers to select (i.e. can use 'selection' int)
+            String novelName = novelNames.get(selection);
+            int charCounter = 0;
+            for (char character : novelName.toCharArray()) { 
+                charCounter++;
+                // TODO: if (boolean Character.isWhitespace(character) == true) {
+//                    
+//                }
+            }
+//            TODO: selectionURL = "https://novelfull.com/" + 
             
 
         } catch (IOException e) { //  if there is an input/output error do this
