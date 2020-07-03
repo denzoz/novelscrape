@@ -10,13 +10,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.jsoup.nodes.Element;
-
 // IOException used to show if there is an input/output error
 import java.io.IOException;
-
 // Scanner used to get input
 import java.util.Scanner;
 import java.util.ArrayList;
+// need to install this pkg before import import org.apache.commons.lang3.StringUtils;
         
 public class NovelFullLatestSelector {
 
@@ -58,25 +57,25 @@ public class NovelFullLatestSelector {
                     System.out.println("Invalid selection, please try again");
                 }
             }
-            System.out.println(novels.size());
+            
             // Now going to make the URL for the novel's page
             
             // When using novelNames.get, usually use index number but due to
             // how the site is scraped, index 0 is empy to just use 
             // normal human numbers to select (i.e. can use 'selection' int)
             String novelName = novelNames.get(selection);
-            int charCounter = 0;
-            for (char character : novelName.toCharArray()) { 
-                charCounter++;
-                // TODO: if (boolean Character.isWhitespace(character) == true) {
-//                    
-//                }
-            }
-//            TODO: selectionURL = "https://novelfull.com/" + 
+            novelName = novelName.replaceAll(" ✕ ", "-");
+            novelName = novelName.replaceAll("[!:'.(),\\s*+]","-").toLowerCase();
+            // TODO: if (novelName.substring(novelName.length() - 1) )
+            // above needs to be able to remove any bad characters at end of
+            // string
+            
+            selectionURL = "https://novelfull.com/" + novelName + ".html";
+            System.out.println(selectionURL);
             
 
         } catch (IOException e) { //  if there is an input/output error do this
-            e.printStackTrace(); // usually you put e
+            e.printStackTrace(); // usually you put e here
         }
     }
 //
