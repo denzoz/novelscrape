@@ -15,7 +15,7 @@ import java.io.IOException;
 // Scanner used to get input
 import java.util.Scanner;
 import java.util.ArrayList;
-// need to install this pkg before import import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.StringUtils;
         
 public class NovelFullLatestSelector {
 
@@ -63,13 +63,23 @@ public class NovelFullLatestSelector {
             // When using novelNames.get, usually use index number but due to
             // how the site is scraped, index 0 is empy to just use 
             // normal human numbers to select (i.e. can use 'selection' int)
-            String novelName = novelNames.get(selection);
+            //String novelName = novelNames.get(selection);
+            String novelName = "test.!";
             novelName = novelName.replaceAll(" ✕ ", "-");
             novelName = novelName.replaceAll("[!:'.(),\\s*+]","-").toLowerCase();
-            // TODO: if (novelName.substring(novelName.length() - 1) )
-            // above needs to be able to remove any bad characters at end of
+            while (true) {
+                String lastCharacter = novelName.substring((novelName.length() - 1));
+                if (lastCharacter.matches("[a-zA-Z]+") == false) {
+                    novelName = novelName.substring(0,novelName.length() - 1);
+                } else {
+                    System.out.println(novelName);
+                    break;
+                }
+                
+            }
+            // above needs to be able to remove any 'bad' characters at end of
             // string
-            
+           
             selectionURL = "https://novelfull.com/" + novelName + ".html";
             System.out.println(selectionURL);
             
