@@ -15,7 +15,8 @@ import java.io.IOException;
 // Scanner used to get input
 import java.util.Scanner;
 import java.util.ArrayList;
-import org.apache.commons.lang3.StringUtils;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
         
 public class NovelFullLatestSelector {
 
@@ -41,7 +42,7 @@ public class NovelFullLatestSelector {
                 String novelAuthor = novel.getElementsByClass("author").text();
                 if (!(novelName.trim().length() == 0 || novelAuthor.trim().length() == 0)) {
                     novelCounter++;
-                    System.out.println(novelCounter + ") " +novelName + " by " + novelAuthor + "\n");
+                    System.out.println(novelCounter + ") " + novelName + " by " + novelAuthor + "\n");
                 } // this ignores any blanks that also have the same 'truyen-title' or 'author' class
             }
             
@@ -58,42 +59,37 @@ public class NovelFullLatestSelector {
                 }
             }
             
-            // Now going to make the URL for the novel's page
-            
+
             // When using novelNames.get, usually use index number but due to
             // how the site is scraped, index 0 is empy to just use 
-            // normal human numbers to select (i.e. can use 'selection' int)
-            //String novelName = novelNames.get(selection);
-            String novelName = "test.!";
+            
+            String novelName = novelNames.get(selection);
             novelName = novelName.replaceAll(" ✕ ", "-");
             novelName = novelName.replaceAll("[!:'.(),\\s*+]","-").toLowerCase();
-            while (true) {
-                String lastCharacter = novelName.substring((novelName.length() - 1));
-                if (lastCharacter.matches("[a-zA-Z]+") == false) {
+            
+            Pattern pattern = Pattern.compile("[a-z0-9]$+", Pattern.CASE_INSENSITIVE);
+            Matcher matcher;
+            boolean matchFound = false;
+            while (matchFound == false) {
+                matcher = pattern.matcher(novelName);
+                matchFound = matcher.find();
+                if (matchFound == false) {
                     novelName = novelName.substring(0,novelName.length() - 1);
-                } else {
-                    System.out.println(novelName);
-                    break;
                 }
-                
             }
             // above needs to be able to remove any 'bad' characters at end of
             // string
-           
-            selectionURL = "https://novelfull.com/" + novelName + ".html";
-            System.out.println(selectionURL);
-            
 
+            // Now going to make the URL linking to the novel's page
+            selectionURL = "https://novelfull.com/" + novelName + ".html";
+            
+            
         } catch (IOException e) { //  if there is an input/output error do this
             e.printStackTrace(); // usually you put e here
         }
     }
-//
-//    public int getSelection() {
-//        return selection;
-//    }
-////    public selectionGet(String [args]) {
-////        SelectionTake x = new SelectionTake();
-////        return x.selection;
-////    } TODO: add getter for selection
+
+    public String getSelectionURL() {
+        return selectionURL;
+    }
 }
