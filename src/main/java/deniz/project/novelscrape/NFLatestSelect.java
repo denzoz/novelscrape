@@ -18,13 +18,13 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
         
-public class NovelFullLatestSelector {
+public class NFLatestSelect {
 
     private int selection; // if you are going to change access to a variable,
                            // must be at class-level 
     private String selectionURL;
     
-    public NovelFullLatestSelector() {
+    public NFLatestSelect() {
         try {
             // JSoup just fetching the website
             Document doc = Jsoup.connect("https://novelfull.com/latest-release-novel").get();
@@ -38,10 +38,10 @@ public class NovelFullLatestSelector {
             System.out.println("Latest novel releases: \n");
             for (Element novel : novels) { // for every novel in the group of novels we have do this
                 String novelName = novel.getElementsByClass("truyen-title").text();
-                novelNames.add(novelName); // arraylist of all novel names for later
                 String novelAuthor = novel.getElementsByClass("author").text();
                 if (!(novelName.trim().length() == 0 || novelAuthor.trim().length() == 0)) {
                     novelCounter++;
+                    novelNames.add(novelName); // arraylist of all novel names for later
                     System.out.println(novelCounter + ") " + novelName + " by " + novelAuthor + "\n");
                 } // this ignores any blanks that also have the same 'truyen-title' or 'author' class
             }
@@ -59,10 +59,9 @@ public class NovelFullLatestSelector {
                 }
             }
             
-
             // When using novelNames.get, usually use index number but due to
             // how the site is scraped, index 0 is empy to just use 
-            
+            // normal human numbers to select (i.e. can use 'selection' int)
             String novelName = novelNames.get(selection);
             novelName = novelName.replaceAll(" ✕ ", "-");
             novelName = novelName.replaceAll("[!:'.(),\\s*+]","-").toLowerCase();
@@ -77,12 +76,11 @@ public class NovelFullLatestSelector {
                     novelName = novelName.substring(0,novelName.length() - 1);
                 }
             }
+            
             // above needs to be able to remove any 'bad' characters at end of
             // string
-
-            // Now going to make the URL linking to the novel's page
+           
             selectionURL = "https://novelfull.com/" + novelName + ".html";
-            
             
         } catch (IOException e) { //  if there is an input/output error do this
             e.printStackTrace(); // usually you put e here
