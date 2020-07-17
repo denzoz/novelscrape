@@ -9,22 +9,22 @@ import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
+import java.util.List;
+
 
 public class NFURLExplorer {
 
-    /**
-     * @param args the command line arguments
-     */
     public NFURLExplorer() {
         NFLatestSelect x = new NFLatestSelect();
-        String target = x.getSelectionURL();
+        String targetURL = x.getSelectionURL();
         try {
-            Document doc = Jsoup.connect(target).get();
-            Elements synopsis = doc.getElementsByClass("desc-text");
-            // TODO: List<Node> childNodes = synopsis.childNodes();
-            System.out.println(synopsis.text());
+            Document doc = Jsoup.connect(targetURL).get();
+            Elements synopsisBox = doc.getElementsByClass("desc-text");
+            List<TextNode> synopsisTextNodes = synopsisBox.textNodes();
+            for (TextNode node : synopsisTextNodes) {
+                System.out.println(node.getWholeText());
+            }
             
         } catch (IOException e) {
             e.printStackTrace();

@@ -62,7 +62,7 @@ public class NFLatestSelect {
             // When using novelNames.get, usually use index number but due to
             // how the site is scraped, index 0 is empy to just use 
             // normal human numbers to select (i.e. can use 'selection' int)
-            String novelName = novelNames.get(selection);
+            String novelName = novelNames.get(selection - 1);
             novelName = novelName.replaceAll(" ✕ ", "-");
             novelName = novelName.replaceAll("[!:'.(),\\s*+]","-").toLowerCase();
             
