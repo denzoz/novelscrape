@@ -4,13 +4,15 @@ package deniz.project.novelscrape;
  *
  * @author denzoz
  */
-public class test {
+
+public class launcher {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        NFURLExplorer x = new NFURLExplorer();
+        //NFURLExplorer x = new NFURLExplorer();
+        gui graphical = new gui();
         
     }
 }
