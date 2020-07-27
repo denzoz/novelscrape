@@ -13,7 +13,7 @@ import org.jsoup.nodes.Element;
 // IOException used to show if there is an input/output error
 import java.io.IOException;
 // Scanner used to get input
-import java.util.Scanner;
+//import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -21,8 +21,14 @@ import java.util.regex.Matcher;
 public class NFLatestSelect {
 
     private int selection; // if you are going to change access to a variable,
-                           // must be at class-level 
+                           // must be at class-level
+    private String novelName;
     private String selectionURL;
+    
+    public ArrayList<String> choices = new ArrayList<>();
+    private String choice;
+    
+    //private DefaultListModel<String> choices;
     
     public NFLatestSelect() {
         try {
@@ -33,36 +39,34 @@ public class NFLatestSelect {
             // use printf to use %s which means to format string
 
             Elements novels = doc.getElementsByClass("row");
-            int novelCounter = 0;
-            ArrayList<String> novelNames = new ArrayList<String>();
-            System.out.println("Latest novel releases: \n");
+            ArrayList<String> novelNames = new ArrayList<>();
+            // not needed, handled by gui System.out.println("Latest novel releases: \n");
             for (Element novel : novels) { // for every novel in the group of novels we have do this
-                String novelName = novel.getElementsByClass("truyen-title").text();
+                novelName = novel.getElementsByClass("truyen-title").text();
                 String novelAuthor = novel.getElementsByClass("author").text();
                 if (!(novelName.trim().length() == 0 || novelAuthor.trim().length() == 0)) {
-                    novelCounter++;
                     novelNames.add(novelName); // arraylist of all novel names for later
-                    System.out.println(novelCounter + ") " + novelName + " by " + novelAuthor + "\n");
+                    // not needed, handled by gui System.out.println(novelCounter + ") " + novelName + " by " + novelAuthor + "\n");
+                    choice = novelName + " by " + novelAuthor;
+                    choices.add(choice);
                 } // this ignores any blanks that also have the same 'truyen-title' or 'author' class
             }
             
-
-            // take user's novel selection and validate
-            while (true) {
-                System.out.println("Enter novel selection: ");
-                Scanner inputTaker = new Scanner(System.in);
-                selection = inputTaker.nextInt();
-                if (selection > 0 && selection < novelCounter + 1) {
-                    break;
-                } else {
-                    System.out.println("Invalid selection, please try again");
-                }
-            }
+// input will be handled by gui so dont need this
+//            // take user's novel selection and validate
+//            while (true) {
+//                System.out.println("Enter novel selection: ");
+//                Scanner inputTaker = new Scanner(System.in);
+//                selection = inputTaker.nextInt();
+//                if (selection > 0 && selection < novelCounter + 1) {
+//                    break;
+//                } else {
+//                    System.out.println("Invalid selection, please try again");
+//                }
+//            }
+//            
+            novelName = novelNames.get(selection - 1);
             
-            // When using novelNames.get, usually use index number but due to
-            // how the site is scraped, index 0 is empy to just use 
-            // normal human numbers to select (i.e. can use 'selection' int)
-            String novelName = novelNames.get(selection - 1);
             novelName = novelName.replaceAll(" ✕ ", "-");
             novelName = novelName.replaceAll("[!:'.(),\\s*+]","-").toLowerCase();
             
@@ -84,10 +88,17 @@ public class NFLatestSelect {
             
         } catch (IOException e) { //  if there is an input/output error do this
             e.printStackTrace(); // usually you put e here
+        } finally {
+            System.out.println("finished scraping latest novels");
         }
     }
 
     public String getSelectionURL() {
         return selectionURL;
     }
+    
+    public ArrayList<String> getChoices() {
+        return choices;
+    }
+    
 }
